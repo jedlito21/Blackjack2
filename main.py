@@ -133,7 +133,6 @@ while gameloop == True:
             if count_hand(player_cards) == 21:
                 chips = blackjack(chips)
                 player = False
-                dealer = False
             else:
                 while player:
                     if len(player_cards) == 2:
@@ -177,3 +176,6 @@ while gameloop == True:
                 next_round = input("Do you wanna play again?  1 - Yes / 2 - No")
                 if next_round == "1":
                     loop = True
+                elif next_round == "2":
+                    loop = False
+                    gameloop = True
