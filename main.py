@@ -139,6 +139,12 @@ while gameloop == True:
                 print('Your cards: ', reveal(player_cards, False), '\nYour sum is: ', count_hand(player_cards))
                 chips = blackjack(chips)
                 player = False
+                next_round = input("Do you wanna play again?  1 - Yes / Any other character - No")
+                if next_round == "1":
+                    loop = True
+                else:
+                    loop = False
+                    gameloop = True
             else:
                 while player:
                     if len(player_cards) == 2:
