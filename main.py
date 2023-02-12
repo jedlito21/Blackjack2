@@ -110,7 +110,7 @@ while gameloop == True:
         # hráč nebo dealer jsou ve hře
         player = True
         dealer = True
-        print(chips)
+        print('Your chips: ', chips)
         # vytvořený balík karet
         ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"]
         colors = ["♥", "♦", "♠", "♣"]
