@@ -76,7 +76,7 @@ def blackjack(chips):
 
 # menu
 MENU = "██████  ██       █████   ██████ ██   ██      ██  █████   ██████ ██   ██\n██   ██ ██      ██   ██ ██      ██  ██       ██ ██   ██ ██      ██  ██ \n██████  ██      ███████ ██      █████        ██ ███████ ██      █████  \n██   ██ ██      ██   ██ ██      ██  ██  ██   ██ ██   ██ ██      ██  ██ \n██████  ███████ ██   ██  ██████ ██   ██  █████  ██   ██  ██████ ██   ██ \n"
-choices = "1 - Play\n2 - Ladder\n3 - Rules\n4 - About\n5 - End game\n"
+choices = "__________________________________________________________________________\n1 - Play\n2 - Ladder\n3 - Rules\n4 - About\n5 - End game\n"
 
 loop = False
 gameloop = True
@@ -97,7 +97,7 @@ while gameloop == True:
         print("_____________________________________\nRULES\n\n•At start you get 2 cards\n•Your goal is to get sum of 21 or less\n•If you have more than 21 you loose\n•If you have 21 or less and the dealer has less than you, you win\n•If dealer has more than you but it's 21 or less, you loose\n_____________________________________\n\n")
         gameloop = True
     elif menu_text == "4":
-        print("_____________________________________\nAbout project\nSomething something blah blah .......................\n_____________________________________\n")
+        print("_____________________________________\nABOUT\nThis game was made as a school project for aplication development by Tomas Jedlicka\n_____________________________________\n")
         gameloop = True
     elif menu_text == "5":
         quit()
@@ -127,10 +127,16 @@ while gameloop == True:
 
         while player or dealer:
             loop = False
-            bet = int(input("Place your bet: "))
+            try:
+                bet = int(input("Place your bet: "))
+            except ValueError:
+                print('\n____________________________________________________\nPlease enter integer only!\n____________________________________________________\n')
+                continue
             print('\n____________________________________________________\nDealer cards: ', reveal(dealer_cards, True), 'and Unknown')
             print('Your cards: ', reveal(player_cards, False), '\nYour sum is: ', count_hand(player_cards))
             if count_hand(player_cards) == 21:
+                print('\n____________________________________________________\nDealer cards: ', reveal(dealer_cards, True), 'and Unknown')
+                print('Your cards: ', reveal(player_cards, False), '\nYour sum is: ', count_hand(player_cards))
                 chips = blackjack(chips)
                 player = False
             else:
@@ -158,8 +164,7 @@ while gameloop == True:
                         deal_card(player_cards)
                         bet = bet * 2
                         player = False
-                    else:
-                        print('You picked wrong number!')
+
 
                 while count_hand(dealer_cards) <= 16:
                     deal_card(dealer_cards)
@@ -173,9 +178,14 @@ while gameloop == True:
                         chips = loose(chips)
                 else:
                     chips = loose(chips)
-                next_round = input("Do you wanna play again?  1 - Yes / 2 - No")
-                if next_round == "1":
-                    loop = True
-                elif next_round == "2":
+                if chips <= 0:
+                    print("You have no more chips!")
                     loop = False
                     gameloop = True
+                else:
+                    next_round = input("Do you wanna play again?  1 - Yes / Any other character - No")
+                    if next_round == "1":
+                        loop = True
+                    else:
+                        loop = False
+                        gameloop = True
