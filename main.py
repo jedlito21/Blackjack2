@@ -174,7 +174,12 @@ while gameloop == True:
             else:
                 while player:
                     if len(player_cards) == 2:
+                        if bet < (chips / 2):
                             double_down = " / 3 - double down"
+                            dd = True
+                        else:
+                            double_down = ""
+                            dd = False
                     else:
                         double_down = ""
                     take_card = input("____________________________________________________\nDo you want to take a card?  1 - yes / 2 - no" + double_down + "\n___________________________________________________\n")
@@ -193,11 +198,12 @@ while gameloop == True:
                         gameloop = True
 
                     elif take_card == "3":
-                        deal_card(player_cards)
-                        bet = bet * 2
-                        player = False
-
-
+                        if dd == True:
+                            deal_card(player_cards)
+                            bet = bet * 2
+                            player = False
+                        else:
+                            print("\n____________________________________________________\nYou picked wrong number!\n____________________________________________________\n")
                 while count_hand(dealer_cards) <= 16:
                     deal_card(dealer_cards)
                 dealer = False
