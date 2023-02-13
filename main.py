@@ -60,7 +60,6 @@ def json_read():
         load = json.load(f)
         for key, value in load.items():
             print(key, " - ", max(value))
-
 # výhry a prohry
 def win(chips):
     print('\n____________________________________________________\nDealer cards: ', reveal(dealer_cards, True), 'and Unknown')
@@ -151,8 +150,8 @@ while gameloop == True:
                 p = True
                 while p:
                     bet = int(input("Place your bet: "))
-                    if bet > (chips / 2):
-                        print("You cannot bet more than half of your chips")
+                    if bet > chips:
+                        print("You cannot bet more than you have")
                     else:
                         p = False
             except ValueError:
@@ -175,7 +174,7 @@ while gameloop == True:
             else:
                 while player:
                     if len(player_cards) == 2:
-                        double_down = " / 3 - double down"
+                            double_down = " / 3 - double down"
                     else:
                         double_down = ""
                     take_card = input("____________________________________________________\nDo you want to take a card?  1 - yes / 2 - no" + double_down + "\n___________________________________________________\n")
