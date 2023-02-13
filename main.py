@@ -43,6 +43,24 @@ def reveal(hand, hidden):
             string = string + card['Rank'] + " " + card['Suit'] + " "
     return string
 
+players = []
+def json_write(nickname, chips):
+    with open("leaderboard.json", "r") as file:
+        load = json.load(file)
+        arr = load[nickname] if nickname in load else []
+        print(load)
+    with open("leaderboard.json", "w") as f:
+        arr.append(chips)
+        players = {nickname: arr}
+        load.update(players)
+        f.write(json.dumps(load))
+
+def json_read():
+    with open("leaderboard.json", "r") as f:
+        load = json.load(f)
+        for key, value in load.items():
+            print(key, " - ", max(value))
+
 # výhry a prohry
 def win(chips):
     print('\n____________________________________________________\nDealer cards: ', reveal(dealer_cards, True), 'and Unknown')
@@ -81,6 +99,7 @@ choices = "_____________________________________________________________________
 loop = False
 gameloop = True
 
+
 print(MENU)
 while gameloop == True:
     menu_text = input(choices)
@@ -92,6 +111,7 @@ while gameloop == True:
         loop = True
     elif menu_text == "2":
         print("_____________________________________\nLEADERBOARD\n_____________________________________\n")
+        print(json_read())
         gameloop = True
     elif menu_text == "3":
         print("_____________________________________\nRULES\n\n•At start you get 2 cards\n•Your goal is to get sum of 21 or less\n•If you have more than 21 you loose\n•If you have 21 or less and the dealer has less than you, you win\n•If dealer has more than you but it's 21 or less, you loose\n_____________________________________\n\n")
@@ -128,7 +148,13 @@ while gameloop == True:
         while player or dealer:
             loop = False
             try:
-                bet = int(input("Place your bet: "))
+                p = True
+                while p:
+                    bet = int(input("Place your bet: "))
+                    if bet > (chips / 2):
+                        print("You cannot bet more than half of your chips")
+                    else:
+                        p = False
             except ValueError:
                 print('\n____________________________________________________\nPlease enter integer only!\n____________________________________________________\n')
                 continue
@@ -138,6 +164,7 @@ while gameloop == True:
                 print('\n____________________________________________________\nDealer cards: ', reveal(dealer_cards, True), 'and Unknown')
                 print('Your cards: ', reveal(player_cards, False), '\nYour sum is: ', count_hand(player_cards))
                 chips = blackjack(chips)
+                json_write(nickname, chips)
                 player = False
                 next_round = input("Do you wanna play again?  1 - Yes / Any other character - No")
                 if next_round == "1":
@@ -178,12 +205,16 @@ while gameloop == True:
                 if count_hand(player_cards) <= 21:
                     if count_hand(player_cards) > count_hand(dealer_cards):
                         chips = win(chips)
+                        json_write(nickname, chips)
                     elif count_hand(player_cards) == count_hand(dealer_cards):
                         draw()
+                        json_write(nickname, chips)
                     else:
                         chips = loose(chips)
+                        json_write(nickname, chips)
                 else:
                     chips = loose(chips)
+                    json_write(nickname, chips)
                 if chips <= 0:
                     print("You have no more chips!")
                     loop = False
