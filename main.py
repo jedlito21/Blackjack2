@@ -48,7 +48,7 @@ def json_write(nickname, chips):
     with open("leaderboard.json", "r") as file:
         load = json.load(file)
         arr = load[nickname] if nickname in load else []
-        print(load)
+
     with open("leaderboard.json", "w") as f:
         arr.append(chips)
         players = {nickname: arr}
@@ -152,6 +152,8 @@ while gameloop == True:
                     bet = int(input("Place your bet: "))
                     if bet > chips:
                         print("You cannot bet more than you have")
+                    elif bet < 0:
+                        print("You can not bet negative amount of chips!")
                     else:
                         p = False
             except ValueError:
